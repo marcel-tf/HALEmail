@@ -157,6 +157,115 @@
             margin-left: 8px;
         }
 
+        .stat-item.automated-reply {
+            border-left-color: #f39c12;
+            background: #fff9ed;
+        }
+
+        .responses-section {
+            margin-top: 40px;
+        }
+
+        .responses-section h2 {
+            color: #0c4a6e;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .response-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid;
+            transition: transform 0.2s ease;
+            border: 1px solid #e0f2fe;
+        }
+
+        .response-card:hover {
+            transform: translateX(5px);
+        }
+
+        .response-card.automated-reply {
+            border-left-color: #f39c12;
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .response-who {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0c4a6e;
+        }
+
+        .response-email {
+            font-size: 14px;
+            color: #0369a1;
+            margin-top: 5px;
+        }
+
+        .response-category {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .response-category.automated-reply {
+            background: #f39c12;
+            color: white;
+        }
+
+        .response-details {
+            margin-bottom: 15px;
+        }
+
+        .response-detail-item {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .response-detail-label {
+            font-weight: 600;
+            color: #0c4a6e;
+            min-width: 120px;
+        }
+
+        .response-detail-value {
+            color: #0369a1;
+        }
+
+        .response-message {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #0c4a6e;
+            font-style: italic;
+        }
+
+        .action-taken {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2e7d32;
+        }
+
         @media (max-width: 768px) {
             .summary-section {
                 grid-template-columns: 1fr;
@@ -182,10 +291,44 @@
         </header>
 
         <div class="content">
-            <div class="empty-state">
-                <div class="empty-state-icon">📭</div>
-                <h2>No Responses Yet</h2>
-                <p>There are currently no email responses recorded for HAL campaigns. When customers reply to your emails, they will appear here with detailed analytics and categorization.</p>
+            <div class="summary-section">
+                <div class="chart-card">
+                    <h2>Response Statistics</h2>
+                    <div class="stats-grid">
+                        <div class="stat-item automated-reply">
+                            <div class="stat-label">Automated Reply</div>
+                            <div class="stat-value">1 <span class="stat-percentage">(100%)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="responses-section">
+                <h2>All Responses (1)</h2>
+
+                <div id="responsesContainer">
+                    <div class="response-card automated-reply" data-category="automated-reply">
+                        <div class="response-header">
+                            <div>
+                                <div class="response-who">Travis Moyer</div>
+                                <div class="response-email">travis@hellofyllo.com</div>
+                            </div>
+                            <div class="response-category automated-reply">Automated Reply</div>
+                        </div>
+                        <div class="response-details">
+                            <div class="response-detail-item">
+                                <span class="response-detail-label">Campaign:</span>
+                                <span class="response-detail-value">HAL Email Content</span>
+                            </div>
+                        </div>
+                        <div class="response-message">
+                            "Thanks for reaching out! I am currently out of the office and will be returning on March 31st. During this time I will have limited access to my phone and computer. If your message is urgent, please contact my colleagues James (james@hellofyllo.com) and Ante (ante@hellofyllo.com) who will be able to assist you. Otherwise, I will respond promptly when I return. -- *Travis Moyer - **Partner* *P:* 773-459-7766 *E:* Travis@hellofyllo.com *W: *www.hellofyllo.com"
+                        </div>
+                        <div class="action-taken">
+                            Action Taken: Need to wait till he comes back because the rest of the cadence he will check
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
