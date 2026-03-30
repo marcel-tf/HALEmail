@@ -307,20 +307,23 @@
     </div>
 
     <script>
-        // Embedded data from Excel - Last updated: 2026-03-26
+        // Embedded data from Excel - Last updated: 2026-03-30
         const allData = [
             {"date": "2026-02-10", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 107, "opened": 15, "clicked": 1, "replied": 0, "delivered": 107, "openRate": 0.1402},
             {"date": "2026-02-12", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 150, "opened": 35, "clicked": 1, "replied": 0, "delivered": 150, "openRate": 0.2333},
             {"date": "2026-02-19", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 65, "opened": 6, "clicked": 0, "replied": 0, "delivered": 65, "openRate": 0.0923},
-            {"date": "2026-02-20", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 100, "opened": 10, "clicked": 0, "replied": 0, "delivered": 100, "openRate": 0.1},
+            {"date": "2026-02-20", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 100, "opened": 10, "clicked": 0, "replied": 0, "delivered": 100, "openRate": 0.1000},
             {"date": "2026-02-23", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 140, "opened": 10, "clicked": 1, "replied": 0, "delivered": 140, "openRate": 0.0714},
             {"date": "2026-02-26", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 150, "opened": 7, "clicked": 0, "replied": 0, "delivered": 139, "openRate": 0.0467},
             {"date": "2026-02-26", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Princess", "leads": 143, "opened": 84, "clicked": 24, "replied": 0, "delivered": 143, "openRate": 0.5874},
             {"date": "2026-03-05", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Princess", "leads": 150, "opened": 17, "clicked": 15, "replied": 0, "delivered": 76, "openRate": 0.1133},
-            {"date": "2026-03-11", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 100, "opened": 25, "clicked": 16, "replied": 0, "delivered": 97, "openRate": 0.25},
+            {"date": "2026-03-11", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 100, "opened": 25, "clicked": 16, "replied": 0, "delivered": 97, "openRate": 0.2500},
             {"date": "2026-03-18", "industry": "Job List", "campaign": "HAL Email Content", "poc": "Yanni", "leads": 146, "opened": 38, "clicked": 19, "replied": 0, "delivered": 136, "openRate": 0.2603},
-            {"date": "2026-03-24", "industry": "HAL/MDA/iDrivio Leads", "campaign": "HAL Email Content", "poc": "Huwaina", "leads": 40, "opened": 11, "clicked": 5, "replied": 1, "delivered": 40, "openRate": 0.275}
+            {"date": "2026-03-24", "industry": "HAL/MDA/iDrivio Leads", "campaign": "HAL email content", "poc": "Huwaina", "leads": 40, "opened": 11, "clicked": 5, "replied": 0, "delivered": 40, "openRate": 0.2750}
         ];
+
+        // Replies data from HALReplies.xlsx - 0 total replies (file is empty)
+        const repliesData = [];
 
         let charts = {
             performance: null,
@@ -346,7 +349,10 @@
             dates.forEach(date => {
                 const option = document.createElement('option');
                 option.value = date;
-                option.textContent = new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                // Parse date manually to avoid timezone issues
+                const [year, month, day] = date.split('-');
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                option.textContent = `${months[parseInt(month) - 1]} ${parseInt(day)}, ${year}`;
                 dateFilter.appendChild(option);
             });
 
@@ -380,7 +386,7 @@
             // Calculate KPIs
             const totalLeads = data.reduce((sum, row) => sum + row.leads, 0);
             const avgOpenRate = data.length > 0 ? (data.reduce((sum, row) => sum + row.openRate, 0) / data.length * 100).toFixed(1) : 0;
-            const totalReplied = data.reduce((sum, row) => sum + row.replied, 0);
+            const totalReplied = repliesData.length; // Use actual replies count from HALReplies
             const totalClicked = data.reduce((sum, row) => sum + row.clicked, 0);
 
             document.getElementById('totalLeads').textContent = totalLeads;
@@ -416,7 +422,12 @@
             charts.performance = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: dateData.map(d => new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })),
+                    labels: dateData.map(d => {
+                        // Parse date manually to avoid timezone issues
+                        const [year, month, day] = d.date.split('-');
+                        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                        return `${months[parseInt(month) - 1]} ${parseInt(day)}`;
+                    }),
                     datasets: [
                         {
                             label: 'Leads Generated',
@@ -506,7 +517,7 @@
         function updateEngagementChart(data) {
             const totalOpened = data.reduce((sum, row) => sum + row.opened, 0);
             const totalClicked = data.reduce((sum, row) => sum + row.clicked, 0);
-            const totalReplied = data.reduce((sum, row) => sum + row.replied, 0);
+            const totalReplied = repliesData.length; // Use actual replies count from HALReplies
             const totalDelivered = data.reduce((sum, row) => sum + row.delivered, 0);
 
             const ctx = document.getElementById('engagementChart');
